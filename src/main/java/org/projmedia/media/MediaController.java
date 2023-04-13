@@ -1,11 +1,14 @@
 package org.projmedia.media;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 import org.projmedia.dimensions.Dimensions;
 import org.projmedia.dimensions.MediaTime;
 
-import javax.media.Manager;
-import javax.media.Player;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -17,9 +20,15 @@ import java.util.List;
 public class MediaController {
     private static MediaController instance = null;
 
+    // index
     private int indexSize = 0;
     private List<String> indexTextList;
     private List<MediaTime> indexTimeList;
+
+    // video
+    JFXPanel jfxPanel;
+    Media media;
+    MediaPlayer mediaPlayer;
 
     private MediaController() {
         indexTextList = new ArrayList<>();
@@ -43,22 +52,26 @@ public class MediaController {
 
     public void setToTime(int index) {
         System.out.println("Set to time: " + indexTimeList.get(index).getMinute() + ":" + indexTimeList.get(index).getSecond() + " at index " + index);
+        Duration time = Duration.seconds(indexTimeList.get(index).getMinute() * 60 + indexTimeList.get(index).getSecond());
+        mediaPlayer.seek(time);
     }
 
     public void setToTime(MediaTime videoTime) {
         System.out.println("Set to time: " + videoTime.getMinute() + ":" + videoTime.getSecond());
+        Duration time = Duration.seconds(videoTime.getMinute() * 60 + videoTime.getSecond());
+        mediaPlayer.seek(time);
     }
 
     public void play() {
-        System.out.println("Play");
+        mediaPlayer.play();
     }
 
     public void pause() {
-        System.out.println("Pause");
+        mediaPlayer.pause();
     }
 
     public void stop() {
-        System.out.println("Stop");
+        mediaPlayer.stop();
     }
 
     public void initIndexList() {
@@ -86,11 +99,20 @@ public class MediaController {
     }
 
     public void initVideoPlayer() {
-        // TODO
+        File mediaFile = new File(Dimensions.VIDEO_FILE_PATH);
+        media = new Media(mediaFile.toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
     }
 
     public List<String> getIndexTextList() {
         return indexTextList;
     }
 
+    public Media getMedia() {
+        return media;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
 }

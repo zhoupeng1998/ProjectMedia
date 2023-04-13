@@ -13,8 +13,8 @@ public class Dimensions {
     public static final int BOTTOM_RIGHT_PANEL_HEIGHT = FRAME_HEIGHT - TOP_RIGHT_PANEL_HEIGHT;
      */
 
-    public static final int VIDEO_WIDTH = 800, TOP_RIGHT_PANEL_WIDTH = VIDEO_WIDTH, RIGHT_PANEL_WIDTH = VIDEO_WIDTH;
-    public static final int VIDEO_HEIGHT = 600, TOP_RIGHT_PANEL_HEIGHT = VIDEO_HEIGHT;
+    public static final int VIDEO_WIDTH = 480, TOP_RIGHT_PANEL_WIDTH = VIDEO_WIDTH, RIGHT_PANEL_WIDTH = VIDEO_WIDTH;
+    public static final int VIDEO_HEIGHT = 270, TOP_RIGHT_PANEL_HEIGHT = VIDEO_HEIGHT;
 
     public static final int LEFT_PANEL_WIDTH = 300;
     public static final int BOTTOM_RIGHT_PANEL_HEIGHT = 200;
@@ -22,6 +22,10 @@ public class Dimensions {
     public static final int FRAME_WIDTH = VIDEO_WIDTH + LEFT_PANEL_WIDTH;
     public static final int FRAME_HEIGHT = VIDEO_HEIGHT + BOTTOM_RIGHT_PANEL_HEIGHT;
 
+    // TODO: change these to take arguments
     public static final String VIDEO_INDEX_PATH = "files/indexfile.txt";
     public static final String VIDEO_FILE_PATH = "files/samplevideo.mp4";
+
+    public static final String RAW_VIDEO_FILE_PATH = "files/InputVideo.rgb";
+    public static final String RAW_AUDIO_FILE_PATH = "files/InputAudio.wav";
 }
