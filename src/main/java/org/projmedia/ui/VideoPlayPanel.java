@@ -1,12 +1,11 @@
 package org.projmedia.ui;
 
-import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaView;
-import org.projmedia.dimensions.Dimensions;
-import org.projmedia.media.MediaController;
+import org.projmedia.domain.Dimensions;
+import org.projmedia.controller.MediaController;
 
 import javax.swing.*;
 import java.awt.*;

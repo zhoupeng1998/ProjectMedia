@@ -1,6 +1,7 @@
 package org.projmedia.analyzer;
 
-import org.projmedia.dimensions.Dimensions;
+import org.projmedia.controller.EnvController;
+import org.projmedia.domain.Dimensions;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -34,7 +35,7 @@ public class MediaAnalyzer {
     }
 
     public void analyze() {
-        File rawVideoFile = new File(Dimensions.RAW_VIDEO_FILE_PATH);
+        File rawVideoFile = new File(EnvController.getInstance().getRawVideoFilePath());
         try {
             RandomAccessFile rafVideoFile = new RandomAccessFile(rawVideoFile, "r");
             FileChannel videoFileChannel = rafVideoFile.getChannel();

@@ -2,8 +2,7 @@ package org.projmedia;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.projmedia.analyzer.MediaAnalyzer;
-import org.projmedia.media.MediaController;
+import org.projmedia.controller.MediaController;
 import org.projmedia.ui.AppFrame;
 
 public class Main extends Application {
@@ -13,9 +12,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        MediaAnalyzer mediaAnalyzer = new MediaAnalyzer();
-        mediaAnalyzer.analyze();
-
         MediaController.init();
         AppFrame appFrame = new AppFrame();
     }

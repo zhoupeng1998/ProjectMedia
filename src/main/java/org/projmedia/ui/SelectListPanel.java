@@ -1,19 +1,12 @@
 package org.projmedia.ui;
 
-import org.projmedia.dimensions.Dimensions;
-import org.projmedia.dimensions.MediaTime;
-import org.projmedia.media.MediaController;
+import org.projmedia.domain.Dimensions;
+import org.projmedia.controller.MediaController;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SelectListPanel extends JPanel {
 

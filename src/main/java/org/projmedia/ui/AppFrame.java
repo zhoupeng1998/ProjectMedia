@@ -1,7 +1,7 @@
 package org.projmedia.ui;
 
-import org.projmedia.dimensions.Dimensions;
-import org.projmedia.media.MediaController;
+import org.projmedia.domain.Dimensions;
+import org.projmedia.controller.MediaController;
 
 import javax.swing.*;
 import java.awt.*;
