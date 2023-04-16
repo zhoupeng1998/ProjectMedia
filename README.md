@@ -47,3 +47,6 @@ chmod +x MyProject.sh
 ./MyProject.sh <input_video_file_path> <input_audio_file_path>`
 ```
 
+### Notes
+
+If you want to adjust the video size, please change the `SCALE_FACTOR` variable in `org.projmedia.domain.Dimensions`.

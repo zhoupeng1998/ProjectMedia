@@ -13,8 +13,10 @@ public class Dimensions {
     public static final int BOTTOM_RIGHT_PANEL_HEIGHT = FRAME_HEIGHT - TOP_RIGHT_PANEL_HEIGHT;
      */
 
-    public static final int VIDEO_WIDTH = 480 * 4, TOP_RIGHT_PANEL_WIDTH = VIDEO_WIDTH, RIGHT_PANEL_WIDTH = VIDEO_WIDTH;
-    public static final int VIDEO_HEIGHT = 270 * 4, TOP_RIGHT_PANEL_HEIGHT = VIDEO_HEIGHT;
+    public static final int SCALE_FACTOR = 4;
+
+    public static final int VIDEO_WIDTH = 480 * SCALE_FACTOR, TOP_RIGHT_PANEL_WIDTH = VIDEO_WIDTH, RIGHT_PANEL_WIDTH = VIDEO_WIDTH;
+    public static final int VIDEO_HEIGHT = 270 * SCALE_FACTOR, TOP_RIGHT_PANEL_HEIGHT = VIDEO_HEIGHT;
 
     public static final int LEFT_PANEL_WIDTH = 300;
     public static final int BOTTOM_RIGHT_PANEL_HEIGHT = 200;

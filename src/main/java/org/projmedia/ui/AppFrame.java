@@ -21,7 +21,6 @@ public class AppFrame extends JFrame {
 
         JPanel topRightPanel = new VideoPlayPanel();
         topRightPanel.setPreferredSize(new Dimension(Dimensions.RIGHT_PANEL_WIDTH, Dimensions.TOP_RIGHT_PANEL_HEIGHT));
-        topRightPanel.setBackground(Color.GREEN);
 
         JPanel bottomRightPanel = new JPanel();
         bottomRightPanel.setPreferredSize(new Dimension(Dimensions.RIGHT_PANEL_WIDTH, Dimensions.BOTTOM_RIGHT_PANEL_HEIGHT));
