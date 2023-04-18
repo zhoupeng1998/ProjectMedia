@@ -1,10 +1,17 @@
 package org.projmedia;
 
-import org.projmedia.media.MediaController;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.projmedia.controller.MediaController;
 import org.projmedia.ui.AppFrame;
 
-public class Main {
+public class Main extends Application {
     public static void main(String[] args) {
+        Application.launch(Main.class, args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         MediaController.init();
         AppFrame appFrame = new AppFrame();
     }

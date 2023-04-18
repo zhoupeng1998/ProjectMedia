@@ -1,7 +1,7 @@
 package org.projmedia.ui;
 
-import org.projmedia.dimensions.Dimensions;
-import org.projmedia.media.MediaController;
+import org.projmedia.domain.Dimensions;
+import org.projmedia.controller.MediaController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +19,8 @@ public class AppFrame extends JFrame {
 
         leftPanel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH, Dimensions.FRAME_HEIGHT));
 
-        JPanel topRightPanel = new JPanel();
+        JPanel topRightPanel = new VideoPlayPanel();
         topRightPanel.setPreferredSize(new Dimension(Dimensions.RIGHT_PANEL_WIDTH, Dimensions.TOP_RIGHT_PANEL_HEIGHT));
-        topRightPanel.setBackground(Color.GREEN);
 
         JPanel bottomRightPanel = new JPanel();
         bottomRightPanel.setPreferredSize(new Dimension(Dimensions.RIGHT_PANEL_WIDTH, Dimensions.BOTTOM_RIGHT_PANEL_HEIGHT));
