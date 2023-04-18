@@ -36,12 +36,17 @@ Installation on Linux can be done using `apt-get` by running `sudo apt-get insta
 
 Please run the scripts in the project root directory:
 
-### Windows
+### Using Python
+```
+python3 .\MyProject.py <input_video_file_path> <input_audio_file_path>
+```
+
+### Windows Powershell
 ```
 ./MyProject.bat <input_video_file_path> <input_audio_file_path>
 ```
 
-### Mac/Linux
+### Mac/Linux bash shell
 ```bash
 chmod +x MyProject.sh 
 ./MyProject.sh <input_video_file_path> <input_audio_file_path>`
