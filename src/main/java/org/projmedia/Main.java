@@ -2,6 +2,7 @@ package org.projmedia;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.projmedia.controller.EnvController;
 import org.projmedia.controller.MediaController;
 import org.projmedia.ui.AppFrame;
 
@@ -12,6 +13,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        EnvController.init();
+
         MediaController.init();
         AppFrame appFrame = new AppFrame();
     }
