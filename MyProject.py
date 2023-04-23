@@ -37,13 +37,17 @@ compress_cmd = [
 
 build_cmd = ["mvn.cmd", "clean", "package"]
 
+
 def compress():
-    compress_process = subprocess.Popen(compress_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    compress_process = subprocess.Popen(
+        compress_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compress_process.communicate()
     print("Compressing done")
 
+
 def build():
-    build_process = subprocess.Popen(build_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    build_process = subprocess.Popen(
+        build_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     build_process.communicate()
     print("Building done")
 
@@ -52,17 +56,17 @@ def build():
 if __name__ == "__main__":
 
     compress_process = multiprocessing.Process(target=compress)
-    build_process = multiprocessing.Process(target=build)
+    # build_process = multiprocessing.Process(target=build)
 
     compress_process.start()
-    build_process.start()
+    # build_process.start()
 
     compress_process.join()
-    #analyzer.analyze()
-    build_process.join()
-
+    # analyzer.analyze()
+    # build_process.join()
+    analyzer.detect_boundary()
     print("Elapsed time: " + str(time.time() - start_time))
 
     run_cmd = ["java", "-jar", "./target/projmedia-1.0-SNAPSHOT.jar"]
-    run_process = subprocess.Popen(run_cmd,shell=True)
+    run_process = subprocess.Popen(run_cmd, shell=True)
     run_process.communicate()
