@@ -7,6 +7,10 @@ import analyzer
 
 start_time = time.time()
 
+if len(sys.argv) < 3:
+    print("Usage: python MyProject.py <raw_video_path> <raw_audio_path>")
+    sys.exit(1)
+
 RAW_VIDEO_PATH = sys.argv[1]
 RAW_AUDIO_PATH = sys.argv[2]
 
@@ -47,6 +51,12 @@ def build():
     build_process.communicate()
     print("Building done")
 
+def analyze():
+    shot_index_list, subshot_index_list = analyzer.scene_analyzer()
+    #print("Shot index list: ", shot_index_list)
+    #print("Subshot index list: ", subshot_index_list)
+    analyzer.frame_analyzer()
+    print("Analyzing done")
 
 # main
 if __name__ == "__main__":
@@ -58,7 +68,7 @@ if __name__ == "__main__":
     build_process.start()
 
     compress_process.join()
-    #analyzer.analyze()
+    analyze()
     build_process.join()
 
     print("Elapsed time: " + str(time.time() - start_time))
