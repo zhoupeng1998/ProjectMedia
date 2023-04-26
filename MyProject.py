@@ -53,9 +53,12 @@ def build():
 
 def analyze():
     shot_index_list, subshot_index_list = analyzer.scene_analyzer()
-    #print("Shot index list: ", shot_index_list)
-    #print("Subshot index list: ", subshot_index_list)
-    analyzer.frame_analyzer()
+    scene_index_list = analyzer.histogram_analyzer()
+    #print("Scene index list: ", len(scene_index_list), scene_index_list)
+    #print("Shot index list: ", len(shot_index_list), shot_index_list)
+    #print("Subshot index list: ", len(subshot_index_list), subshot_index_list)
+    #analyzer.frame_analyzer()
+    # TODO: compose index file here, write to files/indexfile.txt
     print("Analyzing done")
 
 # main

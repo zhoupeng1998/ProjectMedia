@@ -89,9 +89,6 @@ def frame_analyzer():
 def scene_analyzer():
     video_path, audio_path, mp4_path = read_env()
 
-    print("Video path: ", video_path)
-    print("Audio path: ", audio_path)
-
     video = open_video(mp4_path)
     video2 = open_video(mp4_path)
 
@@ -122,10 +119,58 @@ def scene_analyzer():
     # NOTE: return two lists containing the start frame number of each subshot and shot in integer
     return shot_index_list, subshot_index_list
 
+def histogram_analyzer():
+    video_path, audio_path, mp4_path = read_env()
+
+    video_cap = cv2.VideoCapture(mp4_path)
+    video_cap.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
+    video_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
+    video_cap.set(cv2.CAP_PROP_FPS, fps)
+
+    histograms = []
+
+    while video_cap.isOpened():
+        ret, frame = video_cap.read()
+        if not ret:
+            break
+
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        hist_h = cv2.calcHist([hsv], [0], None, [64], [0, 180])
+        hist_s = cv2.calcHist([hsv], [1], None, [64], [0, 255])
+        hist_v = cv2.calcHist([hsv], [1], None, [64], [0, 255])
+
+        cv2.normalize(hist_h, hist_h)
+        cv2.normalize(hist_s, hist_s)
+        cv2.normalize(hist_v, hist_v)
+
+        hist = np.concatenate([hist_h, hist_s, hist_v]).flatten()
+
+        histograms.append(hist)
+
+    histograms = np.array(histograms)
+    hist_diffs = np.diff(histograms, axis=0)
+    distances = np.linalg.norm(hist_diffs, axis=1)
+
+    cv2.normalize(distances, distances)
+    max_value = np.max(distances)
+    indices = np.where(distances > max_value*0.6)
+
+    boundaries = indices[0]
+
+    # set a minimum distance between boundaries
+    index_list = [boundaries[0]]
+    for i in range(1, len(boundaries)):
+        if boundaries[i] - boundaries[i-1] > 10:
+            index_list.append(boundaries[i])
+
+    return index_list
+
+
 if __name__ == "__main__":
     start_time = time.time()
 
     scene_analyzer()
-    frame_analyzer()
+    histogram_analyzer()
+    #frame_analyzer()
 
     print("Time elapsed: ", time.time() - start_time)

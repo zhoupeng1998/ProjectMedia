@@ -13,7 +13,7 @@ This Project requires the following to run:
 
 The following python packages are required to run the project, use the following command:
 ```
-python3 -m pip install opencv-python librosa
+python3 -m pip install opencv-python librosa scenedetect
 ```
 
 ### Windows
