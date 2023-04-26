@@ -181,6 +181,87 @@ def detect_boundary():
                 subshot_idx += 1
 
 
+def detect_boundary_color_histogram():
+    video_path = "files/InputVideo0.rgb"
+    mp4_path = "files/output.mp4"
+    # Create a VideoCapture object and read from input file
+    # If the input is the camera, pass 0 instead of the video file name
+
+    size = (480, 270)
+    fps = 30
+
+    # analyze video
+
+    with open("files/env.txt", "r") as f:
+        video_path = os.path.normpath(f.readline().strip()).replace("\\", "/")
+        audio_path = os.path.normpath(f.readline().strip()).replace("\\", "/")
+        f.close()
+
+    video_cap = cv2.VideoCapture(mp4_path)
+    video_cap.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
+    video_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
+    video_cap.set(cv2.CAP_PROP_FPS, fps)
+
+    histograms = []
+
+    while video_cap.isOpened():
+        ret, frame = video_cap.read()
+        if not ret:
+            break
+
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        hist_h = cv2.calcHist([hsv], [0], None, [64], [0, 180])
+        hist_s = cv2.calcHist([hsv], [1], None, [64], [0, 255])
+        hist_v = cv2.calcHist([hsv], [1], None, [64], [0, 255])
+
+        cv2.normalize(hist_h, hist_h)
+        cv2.normalize(hist_s, hist_s)
+        cv2.normalize(hist_v, hist_v)
+
+        hist = np.concatenate([hist_h, hist_s, hist_v]).flatten()
+
+        histograms.append(hist)
+
+    histograms = np.array(histograms)
+    hist_diffs = np.diff(histograms, axis=0)
+    distances = np.linalg.norm(hist_diffs, axis=1)
+    print(distances)
+
+    # $hist_diffs = []
+
+    cv2.normalize(distances, distances)
+    max_value = np.max(distances)
+    indices = np.where(distances > max_value*0.8)
+
+    boundaries = [["1", "Scene", i+1] for i in indices[0]]
+
+    scene_idx = 1
+    shot_idx = 1
+    subshot_idx = 1
+    with open("files/indexfile.txt", "w") as f:
+        for entry in boundaries:
+            if entry[0] == 1:
+                # scene
+                # reset shot idx, subshot idx
+                shot_idx = 1
+                subshot_idx = 1
+                f.write(str(entry[0]) + "." + entry[1] + " " + str(scene_idx) +
+                        ":" + (tools.frame_to_time(entry[2])).to_str_min_sec() + "\n")
+                scene_idx += 1
+            elif entry[0] == 2:
+                # shot
+                # reset subshot idx
+                subshot_idx = 1
+                f.write(str(entry[0]) + "." + entry[1] + " " + str(shot_idx) +
+                        ":" + (tools.frame_to_time(entry[2])).to_str_min_sec() + "\n")
+                shot_idx += 1
+            else:
+                # subshot
+                f.write(str(entry[0]) + "." + entry[1] + " " + str(subshot_idx) +
+                        ":" + (tools.frame_to_time(entry[2])).to_str_min_sec() + "\n")
+                subshot_idx += 1
+
+
 if __name__ == "__main__":
     # analyze()
     detect_boundary()

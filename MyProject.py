@@ -55,16 +55,19 @@ def build():
 # main
 if __name__ == "__main__":
 
-    compress_process = multiprocessing.Process(target=compress)
+    # compress_process = multiprocessing.Process(target=compress)
     # build_process = multiprocessing.Process(target=build)
 
-    compress_process.start()
+    # compress_process.start()
     # build_process.start()
 
-    compress_process.join()
+    # compress_process.join()
     # analyzer.analyze()
+
+    # analyzer.detect_boundary()
+    analyzer.detect_boundary_color_histogram()
+
     # build_process.join()
-    analyzer.detect_boundary()
     print("Elapsed time: " + str(time.time() - start_time))
 
     run_cmd = ["java", "-jar", "./target/projmedia-1.0-SNAPSHOT.jar"]
