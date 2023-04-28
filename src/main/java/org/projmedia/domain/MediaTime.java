@@ -1,13 +1,20 @@
 package org.projmedia.domain;
 
-// TODO: maybe add miliseconds?
 public class MediaTime {
     private final int minutes;
     private final int seconds;
+    private final int miliseconds;
 
     public MediaTime(int minutes, int seconds) {
         this.minutes = minutes;
         this.seconds = seconds;
+        this.miliseconds = 0;
+    }
+
+    public MediaTime(int minutes, int seconds, int miliseconds) {
+        this.minutes = minutes;
+        this.seconds = seconds;
+        this.miliseconds = miliseconds;
     }
 
     public int getMinute() {
@@ -18,4 +25,7 @@ public class MediaTime {
         return seconds;
     }
 
+    public int getMilisecond() {
+        return miliseconds;
+    }
 }

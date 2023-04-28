@@ -13,7 +13,7 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("The Frame");
 
-        JPanel leftPanel = new SelectListPanel();
+        JPanel leftPanel = new SelectListPanel(new GridLayout(1, 1));
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 

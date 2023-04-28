@@ -48,8 +48,8 @@ public class MediaController {
     }
 
     public void setToTime(int index) {
-        System.out.println("Set to time: " + indexTimeList.get(index).getMinute() + ":" + indexTimeList.get(index).getSecond() + " at index " + index);
-        Duration time = Duration.seconds(indexTimeList.get(index).getMinute() * 60 + indexTimeList.get(index).getSecond());
+        System.out.println("Set to time: " + indexTimeList.get(index).getMinute() + ":" + indexTimeList.get(index).getSecond() + ":" + indexTimeList.get(index).getMilisecond() + " at index " + index);
+        Duration time = Duration.millis(indexTimeList.get(index).getMinute() * 60 * 1000 + indexTimeList.get(index).getSecond() * 1000 + indexTimeList.get(index).getMilisecond());
         mediaPlayer.seek(time);
     }
 
@@ -86,7 +86,7 @@ public class MediaController {
                 indexText.append(parts[1]);
                 indexTextList.add(indexText.toString());
                 indexSize++;
-                indexTimeList.add(new MediaTime(Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));
+                indexTimeList.add(new MediaTime(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])));
             }
         } catch (IOException e) {
             e.printStackTrace();

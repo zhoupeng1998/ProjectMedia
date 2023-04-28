@@ -15,6 +15,11 @@ public class SelectListPanel extends JPanel {
         initSelectList();
     }
 
+    public SelectListPanel(LayoutManager layout) {
+        super(layout);
+        initSelectList();
+    }
+
     public void initSelectList() {
         JList<String> selectList = new JList<>(MediaController.getInstance().getIndexTextList().toArray(new String[0]));
 
