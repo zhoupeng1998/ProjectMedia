@@ -104,8 +104,8 @@ def scene_analyzer():
     subshot_list = subshot_scene_manager.get_scene_list()
     shot_list = shot_scene_manager.get_scene_list()
 
-    subshot_index_list = [int(i[0]) for i in subshot_list]
-    shot_index_list = [int(i[0]) for i in shot_list]
+    subshot_index_list = [(3,int(i[0])) for i in subshot_list]
+    shot_index_list = [(2,int(i[0])) for i in shot_list]
 
     # for debugging
     '''
@@ -158,12 +158,45 @@ def histogram_analyzer():
     boundaries = indices[0]
 
     # set a minimum distance between boundaries
-    index_list = [boundaries[0]]
+    index_list = [(1,0), (1, boundaries[0])]
     for i in range(1, len(boundaries)):
         if boundaries[i] - boundaries[i-1] > 10:
-            index_list.append(boundaries[i])
+            index_list.append((1, boundaries[i]))
 
     return index_list
+
+def combine_index(scene_index_list, shot_index_list, subshot_index_list):
+    level_desc = ["", "1.Scene", "2.Shot", "3.Subshot"]
+    combined_list = scene_index_list + shot_index_list + subshot_index_list
+    combined_list.sort(key=lambda x: (x[1], x[0]))
+    processed_list = [combined_list[0]]
+    for i in range(1, len(combined_list)):
+        if combined_list[i][1] - processed_list[-1][1] > 5:
+            processed_list.append(combined_list[i])
+        else:
+            processed_list[-1] = (min(processed_list[-1][0], combined_list[i][0]), processed_list[-1][1])
+    f = open("files/indexfile.txt", "w")
+    prev_frame = -10
+    scene_count = 1
+    shot_count = 1
+    subshot_count = 1 
+    for i in range(len(processed_list)):
+        level, frame = processed_list[i]
+        if frame - prev_frame > 5:
+            if level == 1:
+                shot_count = subshot_count = 1
+                f.write(level_desc[level] + " " + str(scene_count) + "." + str(tools.frame_to_time(frame)) + "\n")
+                scene_count += 1
+                prev_frame
+            elif level == 2:
+                subshot_count = 1
+                f.write(level_desc[level] + " " + str(shot_count) + "." + str(tools.frame_to_time(frame)) + "\n")
+                shot_count += 1
+            else:
+                f.write(level_desc[level] + " " + str(subshot_count) + "." + str(tools.frame_to_time(frame)) + "\n")
+                subshot_count += 1
+            prev_frame = frame
+    f.close()
 
 
 if __name__ == "__main__":

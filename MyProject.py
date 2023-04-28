@@ -70,6 +70,7 @@ def analyze():
     #print("Scene index list: ", len(scene_index_list), scene_index_list)
     #print("Shot index list: ", len(shot_index_list), shot_index_list)
     #print("Subshot index list: ", len(subshot_index_list), subshot_index_list)
+    analyzer.combine_index(scene_index_list, shot_index_list, subshot_index_list)
     #analyzer.frame_analyzer()
     # TODO: compose index file here, write to files/indexfile.txt
     print("Analyzing done")
