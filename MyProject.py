@@ -8,8 +8,12 @@ import analyzer
 start_time = time.time()
 
 if len(sys.argv) < 3:
-    print("Usage: python MyProject.py <raw_video_path> <raw_audio_path>")
+    print("Usage: python MyProject.py <raw_video_path> <raw_audio_path> -flags")
     sys.exit(1)
+
+skip_build = False
+skip_compress = False
+skip_analyze = False
 
 RAW_VIDEO_PATH = sys.argv[1]
 RAW_AUDIO_PATH = sys.argv[2]
@@ -41,17 +45,26 @@ compress_cmd = [
 
 build_cmd = ["mvn.cmd", "clean", "package"]
 
-def compress():
+def compress(skip_compress):
+    if skip_compress:
+        print("Compressing skipped")
+        return
     compress_process = subprocess.Popen(compress_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compress_process.communicate()
     print("Compressing done")
 
-def build():
+def build(skip_build):
+    if skip_build:
+        print("Building skipped")
+        return
     build_process = subprocess.Popen(build_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     build_process.communicate()
     print("Building done")
 
 def analyze():
+    if skip_analyze:
+        print("Analyzing skipped")
+        return
     shot_index_list, subshot_index_list = analyzer.scene_analyzer()
     scene_index_list = analyzer.histogram_analyzer()
     #print("Scene index list: ", len(scene_index_list), scene_index_list)
@@ -64,8 +77,17 @@ def analyze():
 # main
 if __name__ == "__main__":
 
-    compress_process = multiprocessing.Process(target=compress)
-    build_process = multiprocessing.Process(target=build)
+    if len(sys.argv) > 3:
+        flags = sys.argv[3]
+        if "b" in flags:
+            skip_build = True
+        if "c" in flags:
+            skip_compress = True
+        if "a" in flags:
+            skip_analyze = True
+
+    compress_process = multiprocessing.Process(target=compress, args=(skip_compress,))
+    build_process = multiprocessing.Process(target=build, args=(skip_build,))
 
     compress_process.start()
     build_process.start()
