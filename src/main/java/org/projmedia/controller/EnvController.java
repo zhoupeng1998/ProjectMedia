@@ -29,9 +29,11 @@ public class EnvController {
             instance = new EnvController();
         }
         instance.initEnv();
+        /*
         System.out.println("EnvController initialized");
         System.out.println("Raw video file path: " + instance.getRawVideoFilePath());
         System.out.println("Raw audio file path: " + instance.getRawAudioFilePath());
+        */
     }
 
     public void initEnv() {

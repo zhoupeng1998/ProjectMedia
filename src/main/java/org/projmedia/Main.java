@@ -13,8 +13,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println("Starting Media Player");
         EnvController.init();
-
         MediaController.init();
         AppFrame appFrame = new AppFrame();
     }

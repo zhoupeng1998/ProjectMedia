@@ -1,5 +1,6 @@
 package org.projmedia.controller;
 
+import com.sun.media.jfxmedia.events.PlayerTimeListener;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -7,6 +8,7 @@ import javafx.util.Duration;
 import org.projmedia.domain.Dimensions;
 import org.projmedia.domain.MediaTime;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,9 +25,14 @@ public class MediaController {
     private List<MediaTime> indexTimeList;
 
     // video
-    JFXPanel jfxPanel;
-    Media media;
-    MediaPlayer mediaPlayer;
+    private JFXPanel jfxPanel;
+    private Media media;
+    private MediaPlayer mediaPlayer;
+
+    // select list
+    private JList<String> selectList;
+    private boolean userSelecting = false;
+    private int userSelectIndex = 0;
 
     private MediaController() {
         indexTextList = new ArrayList<>();
@@ -38,6 +45,7 @@ public class MediaController {
         }
         instance.initIndexList();
         instance.initVideoPlayer();
+        instance.selectList = new JList<>(instance.getIndexTextList().toArray(new String[0]));
     }
 
     public static MediaController getInstance() {
@@ -48,13 +56,13 @@ public class MediaController {
     }
 
     public void setToTime(int index) {
-        System.out.println("Set to time: " + indexTimeList.get(index).getMinute() + ":" + indexTimeList.get(index).getSecond() + ":" + indexTimeList.get(index).getMilisecond() + " at index " + index);
-        Duration time = Duration.millis(indexTimeList.get(index).getMinute() * 60 * 1000 + indexTimeList.get(index).getSecond() * 1000 + indexTimeList.get(index).getMilisecond());
+        //System.out.println("Set to time: " + indexTimeList.get(index).getMinute() + ":" + indexTimeList.get(index).getSecond() + ":" + indexTimeList.get(index).getMillisecond() + " at index " + index);
+        Duration time = Duration.millis(indexTimeList.get(index).getMinute() * 60 * 1000 + indexTimeList.get(index).getSecond() * 1000 + indexTimeList.get(index).getMillisecond());
         mediaPlayer.seek(time);
     }
 
     public void setToTime(MediaTime videoTime) {
-        System.out.println("Set to time: " + videoTime.getMinute() + ":" + videoTime.getSecond());
+        //System.out.println("Set to time: " + videoTime.getMinute() + ":" + videoTime.getSecond());
         Duration time = Duration.seconds(videoTime.getMinute() * 60 + videoTime.getSecond());
         mediaPlayer.seek(time);
     }
@@ -97,6 +105,31 @@ public class MediaController {
         File mediaFile = new File(Dimensions.VIDEO_FILE_PATH);
         media = new Media(mediaFile.toURI().toString());
         mediaPlayer = new MediaPlayer(media);
+
+        mediaPlayer.setOnReady(() -> {
+            mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                if (selectList.getValueIsAdjusting()) {
+                    return;
+                }
+                int index = findCurrentSelectListIndex();
+                if (userSelecting) {
+                    userSelecting = false;
+                    index = userSelectIndex;
+                    setToTime(index);
+                }
+                selectList.setSelectedIndex(index);
+            });
+        });
+    }
+
+    public int findCurrentSelectListIndex() {
+        MediaTime currentTime = new MediaTime(mediaPlayer.getCurrentTime().toMillis());
+        for (int i = 0; i < indexSize; i++) {
+            if (currentTime.compareTo(indexTimeList.get(i)) < 0) {
+                return i - 1;
+            }
+        }
+        return indexSize - 1;
     }
 
     public List<String> getIndexTextList() {
@@ -109,5 +142,14 @@ public class MediaController {
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
+    }
+
+    public JList<String> getSelectList() {
+        return selectList;
+    }
+
+    public void setUserSelect(int index) {
+        this.userSelecting = true;
+        this.userSelectIndex = index;
     }
 }

@@ -4,9 +4,9 @@ import org.projmedia.domain.Dimensions;
 import org.projmedia.controller.MediaController;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SelectListPanel extends JPanel {
 
@@ -21,17 +21,17 @@ public class SelectListPanel extends JPanel {
     }
 
     public void initSelectList() {
-        JList<String> selectList = new JList<>(MediaController.getInstance().getIndexTextList().toArray(new String[0]));
+        JList<String> selectList = MediaController.getInstance().getSelectList();
 
         selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        selectList.addListSelectionListener(new ListSelectionListener() {
+        selectList.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int index = selectList.getSelectedIndex();
-                    MediaController.getInstance().setToTime(index);
-                }
+            public void mouseClicked(MouseEvent e) {
+                selectList.setValueIsAdjusting(true);
+                int index = selectList.locationToIndex(e.getPoint());
+                MediaController.getInstance().setUserSelect(index);
+                selectList.setValueIsAdjusting(false);
             }
         });
 
