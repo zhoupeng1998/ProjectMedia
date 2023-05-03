@@ -76,7 +76,8 @@ public class MediaController {
     }
 
     public void stop() {
-        mediaPlayer.stop();
+        mediaPlayer.pause();
+        mediaPlayer.seek(Duration.ZERO);
     }
 
     public void initIndexList() {
@@ -119,6 +120,11 @@ public class MediaController {
                 }
                 selectList.setSelectedIndex(index);
             });
+        });
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.pause();
         });
     }
 
