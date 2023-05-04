@@ -22,6 +22,7 @@ public class MediaController {
     // index
     private int indexSize = 0;
     private List<String> indexTextList;
+    private List<Integer> indexLevelList;
     private List<MediaTime> indexTimeList;
 
     // video
@@ -36,6 +37,7 @@ public class MediaController {
 
     private MediaController() {
         indexTextList = new ArrayList<>();
+        indexLevelList = new ArrayList<>();
         indexTimeList = new ArrayList<>();
     }
 
@@ -77,7 +79,12 @@ public class MediaController {
 
     public void stop() {
         mediaPlayer.pause();
-        mediaPlayer.seek(Duration.ZERO);
+        int index = findCurrentSelectListIndex();
+        while (index > 0 && indexLevelList.get(index) > 2) {
+            index--;
+        }
+        setToTime(index);
+        selectList.setSelectedIndex(index);
     }
 
     public void initIndexList() {
@@ -94,6 +101,7 @@ public class MediaController {
                 }
                 indexText.append(parts[1]);
                 indexTextList.add(indexText.toString());
+                indexLevelList.add(indexLevel);
                 indexSize++;
                 indexTimeList.add(new MediaTime(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4])));
             }
